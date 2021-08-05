@@ -8,7 +8,6 @@ const initialState = {
     loading: false,
     error: '',
     photo: [],
-    currentPage: 1,
 }
 
 const reducer = (state = initialState, action) => {
@@ -56,14 +55,6 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             photo: action.payload
-        }
-    }
-
-    if(action.type === ACTION_TYPES.SELECTED_PAGE) {
-        const nextPage = action.payload
-        return {
-            ...state,
-            currentPage: nextPage
         }
     }
 
