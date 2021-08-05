@@ -13,6 +13,8 @@ const App = () => {
   const user = useSelector((state) => { return state.user })
   const error = useSelector((state) => { return state.error })
   const photo = useSelector((state) => { return state.photo })
+  const currentPage = useSelector((state) => { return state.currentPage })
+  const pages = [1,2,3,4,5,6,7,8,9,10]
 
   const onChangePhone = (event) => {
 
@@ -58,7 +60,7 @@ const App = () => {
   const onPhoto = async () => {
     try {
 
-      const responce = await axios.get(`https://jsonplaceholder.typicode.com/photos?_page=1&_limit=5`)
+      const responce = await axios.get(`https://jsonplaceholder.typicode.com/photos?_page=${currentPage}&_limit=5`)
         dispatch ({
           type: ACTION_TYPES.GET_PHOTO,
           payload: responce.data
@@ -69,8 +71,15 @@ const App = () => {
   }
 
   useEffect(() => {
-    onPhoto()
-}, [])
+    onPhoto(currentPage)
+}, [currentPage])
+
+const changePage = (id) => {
+  dispatch({
+    type: ACTION_TYPES.SELECTED_PAGE,
+    payload: id
+  })
+}
 
   return (
     <div className='App'>
@@ -85,6 +94,15 @@ const App = () => {
         {photo.map((item) => 
         <img key={item.id} src={item.thumbnailUrl} ></img>
         )}
+      </div>
+
+      <div className="pagination">
+      {pages.map((item) => 
+        <a key={item} 
+        className={item === currentPage ? "active" : ''}
+        onClick={() => changePage(item)}>
+          {item}
+        </a>)}
       </div>
 
     </div>
